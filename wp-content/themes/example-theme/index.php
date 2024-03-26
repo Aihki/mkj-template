@@ -2,7 +2,6 @@
 get_header();
 ?>
 
-
 <section class="hero">
     <div class="hero-text">
         <?php
@@ -24,24 +23,11 @@ get_header();
 <main>
     <section class="products">
         <h2>Featured Products</h2>
-        <article class="product">
-            <img src="//placehold.it/200x200?text=Product" alt="Product">
-            <h3>Product 1</h3>
-            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quisquam, quos.</p>
-            <a href="#">Read More</a>
-        </article>
-        <article class="product">
-            <img src="//placehold.it/200x200?text=Product" alt="Product">
-            <h3>Product 2</h3>
-            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quisquam, quos.</p>
-            <a href="#">Read More</a>
-        </article>
-        <article class="product">
-            <img src="//placehold.it/200x200?text=Product" alt="Product">
-            <h3>Product 3</h3>
-            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quisquam, quos.</p>
-            <a href="#">Read More</a>
-        </article>
+        <?php
+        $args = ['tag' => 'featured', 'posts_per_page' => 3];
+        $products = new WP_Query($args);
+        generate_article($products);
+        ?>
     </section>
 </main>
 
