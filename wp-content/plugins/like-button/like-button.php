@@ -37,16 +37,22 @@ function like_button() {
     $table_name = $wpdb->prefix . 'likes';
 
     $post_id = get_the_ID();
+    $user_id = get_current_user_id();
 
-    $results = $wpdb->get_results( "SELECT * FROM $table_name WHERE post_id = $post_id" );
+    $like_exists = $wpdb->get_row( "SELECT * FROM $table_name WHERE post_id = $post_id AND user_id = $user_id" );
 
-    $likes = count( $results );
-
+    $likes = $wpdb->get_var( "SELECT COUNT(*) FROM $table_name WHERE post_id = $post_id" );
 
     $output = '<form id="like-form" method="post" action="'. admin_url( 'admin-post.php' ) .'">';
     $output .= '<input type="hidden" name="action" value="add_like">';
     $output .= '<input type="hidden" name="post_id" value="' . $post_id . '">';
-    $output .= '<button id="like-button"><ion-icon name="thumbs-up"></ion-icon></button>';
+
+    if ( $like_exists ) {
+        $output .= '<button id="like-button"><ion-icon name="thumbs-down"></ion-icon>like</button>';
+    } else {
+        $output .= '<button id="like-button"><ion-icon name="thumbs-up"></ion-icon>like</button>';
+    }
+
     $output .= '<span id="like-count">' . $likes . '</span>';
     $output .= '</form>';
 
@@ -63,23 +69,32 @@ function add_like() {
     $table_name = $wpdb->prefix . 'likes';
 
     $post_id = $_POST['post_id'];
+    $user_id = get_current_user_id();
 
-    $data = array(
-        'post_id' => $post_id
-    );
+    $like_exists = $wpdb->get_row( "SELECT * FROM $table_name WHERE post_id = $post_id AND user_id = $user_id" );
 
-    $format = array(
-        '%d'
-    );
-
-    $success = $wpdb->insert( $table_name, $data, $format );
-
-    if ( $success ) {
-        echo 'Like added';
+    if ( $like_exists ) {
+        $wpdb->delete( $table_name, array( 'id' => $like_exists->id ), array( '%d' ) );
+        echo 'Like removed';
     } else {
-        echo 'Error adding like';
-    }
+        $data = [
+            'post_id' => $post_id,
+            'user_id' => $user_id
+        ];
 
+        $format = [
+            '%d',
+            '%d'
+        ];
+
+        $success = $wpdb->insert( $table_name, $data, $format );
+
+        if ( $success ) {
+            echo 'Like added';
+        } else {
+            echo 'Error adding like';
+        }
+    }
 
     wp_redirect( $_SERVER['HTTP_REFERER'] );
     exit;
@@ -92,7 +107,7 @@ add_action( 'admin_post_add_like', 'add_like' );
 // enqueue icons
 function my_theme_load_ionicons_font() {
     // Load Ionicons font from CDN
-    wp_enqueue_script( 'my-theme-ionicons', 'https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js', array(), '5.2.3', true );
+    wp_enqueue_script( 'my-theme-ionicons', 'https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js', array(), '7.1.0', true );
 }
 
 add_action( 'wp_enqueue_scripts', 'my_theme_load_ionicons_font' );
