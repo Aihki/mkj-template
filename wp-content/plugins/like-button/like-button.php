@@ -30,29 +30,39 @@ function create_table() {
 register_activation_hook( __FILE__, 'create_table' );
 
 // Add like button
-
 function like_button() {
     global $wpdb;
 
     $table_name = $wpdb->prefix . 'likes';
 
     $post_id = get_the_ID();
+
+    // get all likes for count
+    $results = $wpdb->get_results( "SELECT * FROM $table_name WHERE post_id = $post_id" );
+
+    $likes = count( $results );
+
     $user_id = get_current_user_id();
 
-    $like_exists = $wpdb->get_row( "SELECT * FROM $table_name WHERE post_id = $post_id AND user_id = $user_id" );
+    // get user likes
+    $user_like = $wpdb->get_results( "SELECT * FROM $table_name WHERE post_id = $post_id AND user_id = $user_id" );
 
-    $likes = $wpdb->get_var( "SELECT COUNT(*) FROM $table_name WHERE post_id = $post_id" );
-
-    $output = '<form id="like-form" method="post" action="'. admin_url( 'admin-post.php' ) .'">';
-    $output .= '<input type="hidden" name="action" value="add_like">';
-    $output .= '<input type="hidden" name="post_id" value="' . $post_id . '">';
-
-    if ( $like_exists ) {
-        $output .= '<button id="like-button"><ion-icon name="thumbs-down"></ion-icon>like</button>';
-    } else {
-        $output .= '<button id="like-button"><ion-icon name="thumbs-up"></ion-icon>like</button>';
+    $icon = 'heart';
+    if ( $user_like ) {
+        $icon = 'heart-dislike';
     }
+    $nonce = wp_create_nonce( 'like_form_nonce' );
 
+    $output = '<form id="like-form" method="post" action="' . admin_url( 'admin-post.php' ) . '">';
+    $output .= '<input type="hidden" name="action" value="add_like">';
+    $output .= '<input type="hidden" name="like_form_nonce" value="' . $nonce . '">';
+    $output .= '<input type="hidden" name="post_id" value="' . $post_id . '">';
+    $output .= '<button id="like-button" style="
+										    border: 0;
+										    background-color: rgba(0,0,0,0);
+											">';
+    $output .= '<ion-icon name="' . $icon . '" style="color: #e21212;"></ion-icon>';
+    $output .= '</button>';
     $output .= '<span id="like-count">' . $likes . '</span>';
     $output .= '</form>';
 
@@ -66,37 +76,67 @@ add_shortcode( 'like_button', 'like_button' );
 function add_like() {
     global $wpdb;
 
+   // if( !isset($_POST['']) || !wp_verify_nonce( $_POST['like_form_nonce'], 'like_form_nonce' ) ) {
+    //    wp_die('no hacking plz');
+    //};
+
     $table_name = $wpdb->prefix . 'likes';
 
     $post_id = $_POST['post_id'];
     $user_id = get_current_user_id();
 
-    $like_exists = $wpdb->get_row( "SELECT * FROM $table_name WHERE post_id = $post_id AND user_id = $user_id" );
+    $data = [
+        'post_id' => $post_id,
+        'user_id' => $user_id
+    ];
 
-    if ( $like_exists ) {
-        $wpdb->delete( $table_name, array( 'id' => $like_exists->id ), array( '%d' ) );
-        echo 'Like removed';
-    } else {
-        $data = [
-            'post_id' => $post_id,
-            'user_id' => $user_id
-        ];
+    $format = [
+        '%d',
+        '%d'
+    ];
 
-        $format = [
-            '%d',
-            '%d'
-        ];
+    // check if user has already liked
+    $like = $wpdb->get_results( "SELECT * FROM $table_name WHERE post_id = $post_id AND user_id = $user_id" );
 
-        $success = $wpdb->insert( $table_name, $data, $format );
 
-        if ( $success ) {
-            echo 'Like added';
-        } else {
-            echo 'Error adding like';
-        }
+    if ( $like ) {
+        $wpdb->delete( $table_name, $data, $format );
+
+        // get all likes for count
+        $results = $wpdb->get_results( "SELECT * FROM $table_name WHERE post_id = $post_id" );
+
+        $likes = count( $results );
+        header( 'Content-Type: application/json' );
+        echo '{
+			"likes": ' . $likes . ',
+			"liked": false,
+			"message": "Like removed"		
+		}';
+        // wp_redirect( $_SERVER['HTTP_REFERER'] );
+        exit;
     }
 
-    //wp_redirect( $_SERVER['HTTP_REFERER'] );
+
+    $success = $wpdb->insert( $table_name, $data, $format );
+
+    // get all likes for count
+    $results = $wpdb->get_results( "SELECT * FROM $table_name WHERE post_id = $post_id" );
+
+    $likes = count( $results );
+
+    if ( $success ) {
+        header( 'Content-Type: application/json' );
+        echo '{
+			"likes": ' . $likes . ',
+			"liked": true,
+			"message": "Like added"		
+		}';
+    } else {
+        header( 'HTTP/1.1 500 Internal Server Error');
+    }
+
+
+    // wp_redirect( $_SERVER['HTTP_REFERER'] );
     exit;
 }
 
@@ -108,7 +148,7 @@ add_action( 'wp_ajax_add_like', 'add_like' );
 function setup_scripts(): void {
     // Load Ionicons font from CDN
     wp_enqueue_script( 'my-theme-ionicons', 'https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js', [], '7.1.0', true );
-    wp_enqueue_script('like-button-script',plugin_dir_url(__FILE__) . 'like-button.js', ['jquery'], '1.0', true);
+    wp_enqueue_script( 'like-button-script', plugin_dir_url( __FILE__ ) . 'like-button.js', [ 'jquery' ], '1.0', true );
     wp_localize_script( 'like-button-script', 'like_button', [
         'ajax_url' => admin_url( 'admin-ajax.php' )
     ] );

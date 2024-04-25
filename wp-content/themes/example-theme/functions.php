@@ -21,6 +21,17 @@ function my_breadcrumb_title_swapper( $title, $type, $id ) {
 
 add_filter( 'bcn_breadcrumb_title', 'my_breadcrumb_title_swapper', 3, 10 );
 
+function mytheme_enqueue_bootstrap() {
+    // Enqueue Bootstrap CSS
+    wp_enqueue_style('bootstrap-css', get_stylesheet_directory_uri() . '/css/bootstrap.min.css' );
+
+    // Enqueue Bootstrap Bundle JS (includes Popper)
+    wp_enqueue_script('bootstrap-js', get_stylesheet_directory_uri() . '/js/bootstrap.bundle.min.js', array('jquery'), null, true );
+}
+require_once get_template_directory() . '/inc/class-wp-bootstrap-navwalker.php';
+
+
+add_action('wp_enqueue_scripts', 'mytheme_enqueue_bootstrap');
 
 // actions
 function theme_setup(): void {
@@ -51,6 +62,7 @@ add_action( 'after_setup_theme', 'theme_setup' );
 function style_setup(): void {
     wp_enqueue_style( 'main-style', get_stylesheet_uri() );
 }
+
 
 add_action( 'wp_enqueue_scripts', 'style_setup' );
 
