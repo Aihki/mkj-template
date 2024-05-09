@@ -4,6 +4,7 @@
 <head>
     <meta charset="<?php bloginfo('charset'); ?>">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <?php wp_head(); ?>
 
 </head>
@@ -21,8 +22,3 @@
             <?php wp_nav_menu(['container' => '', 'menu_class' => 'navbar-nav ml-auto', 'theme_location' => 'main-menu']); ?>
         </div>
     </nav>
-    <section class="breadcrumbs">
-        <?php if (function_exists('bcn_display')) {
-            bcn_display();
-        } ?>
-    </section>

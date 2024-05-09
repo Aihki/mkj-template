@@ -11,6 +11,8 @@
 /wp-content/languages
 /wp-content/plugins/
 !/wp-content/plugins/like-button
+!/wp-content/plugins/rating
+!/wp-content/plugins/comment
 /wp-content/themes/index.php
 /wp-includes/
 /index.php
