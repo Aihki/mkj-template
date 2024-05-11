@@ -159,8 +159,12 @@ footer {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    color: #f4f4f4;
+    color: #000000;
     text-align: center;
+    border: 1px solid #000;
+    padding: 20px;
+    background-color: #fff;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
 }
 
 .hero img {
@@ -257,9 +261,9 @@ footer {
     flex-direction: column;
     padding: 20px;
     background-color: #fff;
-    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2); /* Add shadow effect */
-    border-radius: 10px; /* Add rounded corners */
-    margin: 20px auto; /* Add space around the card */
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+    border-radius: 10px;
+    margin: 20px auto;
 }
 .single-content img {
     display: block;
@@ -448,7 +452,6 @@ button:hover {
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 200px;
 }
 
 .post-count-box {
@@ -513,6 +516,24 @@ button:hover {
     color: #007bff;
 }
 
+.comment-area {
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    background-color: #fff;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+    border-radius: 10px;
+    margin: 20px auto;
+}
+
+.comment {
+    padding: 20px;
+    background-color: #fff;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+    border-radius: 10px;
+    margin: 20px auto;
+}
+
 @media (min-width: 768px) {
     .container {
         padding: 0;
@@ -550,5 +571,64 @@ button:hover {
     .single {
         padding: 2rem 4rem;
         margin: 2rem 0;
+    }
+
+}
+@media screen and (max-width: 768px) {
+    .product-container,
+    .new-products,
+    .products {
+        flex-direction: column;
+        width: 100%;
+    }
+
+    .category-box {
+        flex: 0 0 100%;
+    }
+
+    .container,
+    .about-us .container {
+        flex-direction: column;
+    }
+
+    .lef-side,
+    .form {
+        max-width: 50%;
+    }
+
+    .map iframe{
+        width: 100%;
+    }
+
+    #single-post {
+        width: 90%;
+    }
+
+    .recommendation {
+        flex-direction: column;
+        width: 90%;
+    }
+
+    .product-recommendation {
+        height: auto;
+        padding: 24px;
+        gap: 1rem;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+    .hero-text {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        color: #000000;
+        text-align: center;
+        border: 1px solid #000;
+        padding: 10px;
+        background-color: #fff;
+        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+        font-size: 14px;
     }
 }

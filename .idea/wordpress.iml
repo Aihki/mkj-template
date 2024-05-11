@@ -10,6 +10,13 @@
       <excludeFolder url="file://$MODULE_DIR$/wp-content/themes/twentytwentythree" />
       <excludeFolder url="file://$MODULE_DIR$/wp-content/themes/twentytwentytwo" />
       <excludeFolder url="file://$MODULE_DIR$/wp-content/uploads" />
+      <excludeFolder url="file://$MODULE_DIR$/wp-content/plugins/all-in-one-wp-migration" />
+      <excludeFolder url="file://$MODULE_DIR$/wp-content/plugins/breadcrumb-navxt" />
+      <excludeFolder url="file://$MODULE_DIR$/wp-content/plugins/classic-editor" />
+      <excludeFolder url="file://$MODULE_DIR$/wp-content/plugins/comment" />
+      <excludeFolder url="file://$MODULE_DIR$/wp-content/plugins/rating" />
+      <excludeFolder url="file://$MODULE_DIR$/wp-content/plugins/ssh-sftp-updater-support" />
+      <excludeFolder url="file://$MODULE_DIR$/wp-content/plugins/svg-support" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />

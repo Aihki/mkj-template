@@ -157,3 +157,9 @@ Network Trash Folder
 Temporary Items
 .apdisk
 
+!/wp-content/plugins/like-button/like-button.js
+!/wp-content/plugins/comment/
+!/wp-content/plugins/comment/comment.php
+!/wp-content/plugins/rating/rating.js
+!/wp-content/plugins/comment/
+!/wp-content/plugins/rating/

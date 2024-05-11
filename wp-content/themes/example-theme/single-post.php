@@ -28,8 +28,11 @@ get_header();
                 <div class="now">
                     <button>buy now</button>
                 </div>
-                <div class="center-content">
-                    <?php echo do_shortcode('[comment_form]'); ?>
+            </div>
+            <div class="center-content">
+                <div class="comment-area">
+                    <h2>Comments</h2>
+                    <?php echo do_shortcode('[comment_form post_id="' . get_the_ID() . '"]'); ?>
                 </div>
             </div>
         </section>
