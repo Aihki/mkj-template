@@ -119,17 +119,17 @@ function display_stars($rating) {
 
     // Add full stars
     for ($i = 1; $i <= floor($rating); $i++) {
-        $output .= '<ion-icon name="star"></ion-icon>';
+        $output .= '<i class="fas fa-star"></i>';
     }
 
     // Add half star if the rating is not a whole number
     if ($rating - floor($rating) >= 0.5) {
-        $output .= '<ion-icon name="star-half"></ion-icon>';
+        $output .= '<i class="fas fa-star-half-alt"></i>';
     }
 
     // Add empty stars
     for ($i = ceil($rating); $i < 5; $i++) {
-        $output .= '<ion-icon name="star-outline"></ion-icon>';
+        $output .= '<i class="far fa-star"></i>';
     }
 
     return $output;
@@ -139,7 +139,8 @@ function display_stars($rating) {
 // Enqueue scripts
 function setup_scripts2(): void {
     // Enqueue Ionicons
-    wp_enqueue_style( 'ionicons', 'https://unpkg.com/ionicons@7.1.0/dist/css/ionicons.min.css', [], '7.1.0' );
+    error_log('setup_scripts2 is called');
+    wp_enqueue_style( 'font-awesome', 'https://use.fontawesome.com/releases/v5.15.4/css/all.css', [], '5.15.4' );
 
     wp_enqueue_script( 'rating-plugin-script', plugin_dir_url( __FILE__ ) . 'rating.js', [ 'jquery' ], '1.0', true );
     wp_localize_script( 'rating-plugin-script', 'rating_plugin', [

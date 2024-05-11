@@ -1,43 +1,35 @@
 'use strict';
 
-jQuery(document).ready(function($) {
+document.addEventListener('submit', async function (event) {
+    if (!(event.target && event.target.id === 'rating-form')) return;
 
-    const ratingRadios = $('input[type="radio"][name="rating"]');
-    const labels = jQuery('#rating-form').parent().children('label');
-    let selectedRating;
+    event.preventDefault();
 
-    ratingRadios.on('click', function() {
-        selectedRating = $(this).val();
-        $('#rating-form').submit();
-    });
+    const formData = new FormData(event.target);
+    const serializedData = new URLSearchParams(formData).toString();
 
-    jQuery('#rating-form').on('submit', function (evt) {
-        evt.preventDefault();
-
-        jQuery.ajax({
-            type: "POST",
-            url: rating_plugin.ajax_url,
-            data: jQuery(this).serialize(),
-            success: function(response) {
-                if(response.success) {
-                    jQuery('#rating-display').html(response.message);
-                    jQuery('#rating-display').show();
-                    labels.each(function (i) {
-                        const star = jQuery(this).find('ion-icon');
-                        if (i < selectedRating) {
-                            star.attr('name', 'star');
-                        } else {
-                            star.attr('name', 'star-outline');
-                        }
-                    });
-                } else {
-                    alert('There was an error submitting your rating.');
-                }
+    try {
+        const response = await fetch(rating_plugin.ajax_url, {
+            method: 'POST',
+            body: serializedData,
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
             },
-            error: function() {
-                alert('There was an error submitting your rating.');
-            },
-            dataType: 'json'
         });
-    });
+
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+
+        const data = await response.json();
+
+        document.querySelector('#rating-display').textContent = data.message;
+        const labels = document.querySelectorAll('#rating-form label');
+        labels.forEach((label, i) => {
+            const star = label.querySelector('i');
+            star.className = i < data.rating ? 'fas fa-star' : 'far fa-star';
+        });
+    } catch (error) {
+        console.error('Error:', error);
+    }
 });
