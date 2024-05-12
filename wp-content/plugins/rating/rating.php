@@ -58,6 +58,7 @@ function rating_form() {
             $output .= '<input type="radio" name="rating" value="' . $i . '" required> ' . $i . ' ';
         }
 
+        $output .= '<input type="submit" value="Submit Rating">';
         $output .= '</form>';
 
         return $output;

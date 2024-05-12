@@ -272,6 +272,7 @@ footer {
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
     border-radius: 10px;
     margin: 20px auto;
+    width:100%
 }
 .single-content img {
     display: block;
@@ -460,6 +461,7 @@ button:hover {
     display: flex;
     justify-content: center;
     align-items: center;
+    width: 100%;
 }
 
 .post-count-box {
@@ -524,7 +526,8 @@ button:hover {
     color: #007bff;
 }
 
-.comment-area {
+.comment-area,
+.comment {
     display: flex;
     flex-direction: column;
     padding: 20px;
@@ -532,15 +535,9 @@ button:hover {
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
     border-radius: 10px;
     margin: 20px auto;
+    width: 100%;
 }
 
-.comment {
-    padding: 20px;
-    background-color: #fff;
-    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
-    border-radius: 10px;
-    margin: 20px auto;
-}
 
 @media (min-width: 768px) {
     .container {
