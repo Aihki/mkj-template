@@ -84,6 +84,7 @@ function filter_ptags_on_images($content){
 add_filter('the_content', 'filter_ptags_on_images');
 
 
+
 // custom functions
 require_once( __DIR__ . '/inc/article-function.php' );
 require_once( __DIR__ . '/inc/recommendation.php' );

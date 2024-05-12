@@ -46,9 +46,14 @@ if (is_front_page()) {
     }
     echo '</section>
 
-        <h2>Featured Products</h2>';
+        <h2>Owl choice</h2>';
 
-    $args = array('tag' => 'featured', 'posts_per_page' => 3);
+
+    $args = array(
+        'tag' => 'owl-choice',
+        'posts_per_page' => 3,
+        'orderby' => 'rand'
+    );
     $products = new WP_Query($args);
     generate_article($products);
 
